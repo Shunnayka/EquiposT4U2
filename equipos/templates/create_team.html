@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Equipo - Gestión de Equipos{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h2 class="text-center mb-4">Crear nuevo equipo</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre del equipo</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="league" class="form-label">Liga</label>
+                    <input type="text" class="form-control" id="league" name="league" required>
+                </div>
+                <div class="mb-3">
+                    <label for="coach" class="form-label">Entrenador</label>
+                    <input type="text" class="form-control" id="coach" name="coach" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Crear equipo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

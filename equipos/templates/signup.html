@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro - Gestión de Equipos{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h2 class="text-center mb-4">Crear cuenta</h2>
+           
+            {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                    <small class="form-text text-muted">Requerido. 150 caracteres o menos. Letras, dígitos y @/./+/-/_ solamente.</small>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password1" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password1" name="password1" required>
+                    <small class="form-text text-muted">
+                        <ul>
+                            <li>Tu contraseña no puede ser demasiado similar a tu otra información personal.</li>
+                            <li>Tu contraseña debe contener al menos 8 caracteres.</li>
+                            <li>Tu contraseña no puede ser una contraseña comúnmente utilizada.</li>
+                            <li>Tu contraseña no puede ser entirely numérica.</li>
+                        </ul>
+                    </small>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password2" class="form-label">Confirmar contraseña</label>
+                    <input type="password" class="form-control" id="password2" name="password2" required>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </form>
+            
+            <div class="text-center mt-3">
+                <p>¿Ya tienes una cuenta? <a href="{% url 'signin' %}">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

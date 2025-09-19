@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Equipos - Gestión de Equipos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Mis Equipos</h1>
+    <a href="{% url 'create_team' %}" class="btn btn-primary">Agregar Equipo</a>
+</div>
+
+<div class="row">
+    {% for team in teams %}
+    <div class="col-md-6 mb-4">
+        <div class="card team-card p-4">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                    <i class="bi bi-shield-shaded" style="font-size: 2.5rem; color: #0d6efd;"></i>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h4>{{ team.name }}</h4>
+                    <p class="mb-1"><strong>Liga:</strong> {{ team.league }}</p>
+                    <p class="mb-1"><strong>Jugadores:</strong> {{ team.players.count }}</p>
+                    <p class="mb-0"><strong>Entrenador:</strong> {{ team.coach }}</p>
+                    <div class="mt-2">
+                        <!-- Botones comentados hasta que crees las vistas -->
+                        <!-- <a href="#" class="btn btn-sm btn-outline-primary">Ver detalles</a> -->
+                        <!-- <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No tienes equipos registrados. <a href="{% url 'create_team' %}" class="alert-link">Crea tu primer equipo</a>.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

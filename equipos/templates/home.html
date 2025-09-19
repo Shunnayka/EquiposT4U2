@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="welcome-section text-center">
+    <h1 class="display-4 fw-bold">Sistema de Gestión de Equipos de Fútbol</h1>
+    <p class="lead">Administra tu equipo de fútbol de manera eficiente con nuestra plataforma Django</p>
+    {% if user_is_authenticated %}
+    <a href="{% url 'teams' %}" class="btn btn-light btn-lg mt-3">Ver mis equipos</a>
+    {% else %}
+    <a href="{% url 'signup' %}" class="btn btn-light btn-lg mt-3">Comenzar ahora</a>
+    {% endif %}
+</div>
+
+<div class="row text-center mb-4">
+    <h2>Características principales</h2>
+    <p class="lead">Todo lo que necesitas para gestionar tu equipo de fútbol</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center p-4">
+            <i class="bi bi-people-fill feature-icon"></i>
+            <h3>Gestión de Equipos</h3>
+            <p>Registra y administra toda la información de tus equipos de fútbol de manera centralizada.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center p-4">
+            <i class="bi bi-person-badge feature-icon"></i>
+            <h3>Control de Jugadores</h3>
+            <p>Mantén un registro detallado de todos los jugadores, sus estadísticas y información de contacto.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center p-4">
+            <i class="bi bi-list-check feature-icon"></i>
+            <h3>Tareas y Entrenamientos</h3>
+            <p>Organiza tareas, entrenamientos y actividades para tu equipo.</p>
+        </div>
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Mis Equipos</h2>
+            <a href="{% url 'create_team' %}" class="btn btn-primary">Agregar Equipo</a>
+        </div>
+
+        <div class="row">
+            {% for team in teams %}
+            <div class="col-md-6 mb-4">
+                <div class="card team-card p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-shield-shaded" style="font-size: 2.5rem; color: #0d6efd;"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h4>{{ team.name }}</h4>
+                            <p class="mb-1"><strong>Liga:</strong> {{ team.league }}</p>
+                            <p class="mb-1"><strong>Jugadores:</strong> {{ team.players.count }}</p>
+                            <p class="mb-0"><strong>Entrenador:</strong> {{ team.coach }}</p>
+                            <div class="mt-2">
+                                <a href="{% url 'team_detail' team.id %}" class="btn btn-sm btn-outline-primary">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No tienes equipos registrados. <a href="{% url 'create_team' %}" class="alert-link">Crea tu primer equipo</a>.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Tareas Recientes</h2>
+            <a href="{% url 'tasks' %}" class="btn btn-sm btn-primary">Ver todas</a>
+        </div>
+        
+        <div class="card p-3">
+            {% for task in recent_tasks %}
+            <div class="task-item {% if task.important %}important{% endif %} {% if task.completed %}completed{% endif %}">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">{{ task.title }}</h5>
+                    <div>
+                        {% if task.important %}
+                        <span class="badge bg-danger">Importante</span>
+                        {% endif %}
+                        {% if task.completed %}
+                        <span class="badge bg-success">Completada</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="mb-1">{{ task.description|truncatewords:10 }}</p>
+                <small>Creada: {{ task.created_at|date:"d/m/Y" }}</small>
+            </div>
+            {% empty %}
+            <p class="text-center">No hay tareas registradas</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row mt-5">
+    <div class="col-md-6 mx-auto">
+        <div class="card p-4">
+            <h3 class="text-center mb-4">¿Primera vez aquí?</h3>
+            <p class="text-center">Regístrate para comenzar a gestionar tus equipos de fútbol</p>
+            <div class="d-grid gap-2">
+                <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">Crear una cuenta</a>
+                <a href="{% url 'signin' %}" class="btn btn-outline-primary">Ya tengo una cuenta</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
